@@ -21,7 +21,7 @@
 
         // ball
         var ballX = 100;
-        var ballY = 200;
+        var ballY = 400;
         var ballSpeedX = 7;
         var ballSpeedY = 7;
         const BALL_SIZE = 10;
@@ -29,9 +29,9 @@
 
         // paddle
         var paddleX = 300;
-        const PADDLE_WIDTH = 100;
+        const PADDLE_WIDTH = 80;
         const PADDLE_THICKNESS = 10;
-        const PADDLE_Y = 480;
+        const PADDLE_Y = 470;
         const PADDLE_COLOR = "white";
 
         // setup script
@@ -48,8 +48,33 @@
         function updateAll() {
             moveAll();
             drawAll();
+            paddleBallCollision();            
         }
 
+        /* COLLISION */
+        function paddleBallCollision(){
+            var paddleTopEdgeY = PADDLE_Y;
+            var paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THICKNESS;
+            var paddleLeftEdgeX = paddleX;
+            var paddleRightEdgeX = paddleLeftEdgeX + PADDLE_WIDTH;
+            var ballBottomPointY = ballY + BALL_SIZE;
+
+            if (ballBottomPointY > paddleTopEdgeY && // below top of paddle
+                ballBottomPointY < paddleBottomEdgeY && // above bottom of paddle
+                ballX > paddleLeftEdgeX && // right of paddle left
+                ballX < paddleRightEdgeX) { //left of paddle right
+                
+                // update Y-speed
+                ballSpeedY *= -1;
+                // update X-speed based on distance of centers between ball and paddle (X)
+                var paddleCenterPointX = paddleX + PADDLE_WIDTH / 2;
+                var paddleToBallCenter = ballX - paddleCenterPointX;
+                ballSpeedX = paddleToBallCenter * 0.35;
+            }
+        }
+        /* END OF COLLISION */
+
+        /* DRAWING */
         function drawAll() {
             // big frame (draw every time to clear screen)
             colorRect(0, 0, canvas.width, canvas.height, BG_COLOR);
@@ -70,6 +95,7 @@
             var mouseX = event.clientX - rect.left - root.scrollLeft;
             paddleX = mouseX - PADDLE_WIDTH / 2; // center paddle
         }
+        /* END OF EVENTS */
 
         /* DRAWING HELPERS */
         function colorRect(topX, topY, boxWidth, boxHeight, fillColor) {
@@ -83,7 +109,9 @@
             canvasContext.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
             canvasContext.fill();
         }
+        /* END OF DRAWING HELPERS */
 
+        /* MOTION */
         function moveAll() {
             // update element position
             ballX += ballSpeedX;
@@ -92,9 +120,20 @@
             if (ballX < BALL_SIZE || ballX > canvas.width - BALL_SIZE) {
                 ballSpeedX *= -1;
             }
-            if (ballY < BALL_SIZE || ballY > canvas.height - BALL_SIZE) {
+            if (ballY < BALL_SIZE) {
                 ballSpeedY *= -1;
             }
+            // game over
+            if (ballY > canvas.height - BALL_SIZE) {
+                resetBall();
+            }
+        }
+
+        function resetBall() {
+            ballX = canvas.width / 2;
+            ballY = canvas.height / 2;
+            ballSpeedX = 7;
+            ballSpeedY = 7;
         }
     </script>
 </body>
