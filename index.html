@@ -38,11 +38,24 @@
             canvasContext.fillStyle = "black";
             canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 
-            // game elements (ball)
+            // game elements
             canvasContext.fillStyle = "white";
             canvasContext.beginPath();
             canvasContext.arc(ballX, ballY, ballSize, 0, Math.PI * 2, true);
             canvasContext.fill();
+        }
+
+        function moveAll() {
+            // update element position
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+            // boundations (collision with big frame)
+            if (ballX < 0 || ballX > canvas.width) {
+                ballSpeedX *= -1;
+            }
+            if (ballY < 0 || ballY > canvas.height) {
+                ballSpeedY *= -1;
+            }
         }
     </script>
 </body>

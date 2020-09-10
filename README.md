@@ -12,6 +12,9 @@
 4. Drawing code with canvas context
    - Draw big frame (to create effect of animation)
    - Draw game elements
+5. Motion code
+   - Update element position
+   - Set boundations (collision with big frame)
 
 # Notes and Tips
 - [VSCode] Declare type to enable autofilling feature: ```/** @type {CanvasRenderingContext2D} */```
