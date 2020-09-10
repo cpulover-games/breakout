@@ -12,8 +12,9 @@
 
     <script>
         // fundamental
+        /** @type {HTMLCanvasElement} */ // declare type in VSCode (for code completion)
         var canvas;
-        /** @type {CanvasRenderingContext2D} */ // declare type in VSCode (for autofilling)
+        /** @type {CanvasRenderingContext2D} */
         var canvasContext;
         const FPS = 30;
         const BG_COLOR = "black";
@@ -33,11 +34,15 @@
         const PADDLE_Y = 480;
         const PADDLE_COLOR = "white";
 
+        // setup script
         window.onload = function () {
             canvas = document.getElementById("gameCanvas");
             canvasContext = canvas.getContext("2d");
 
             setInterval(updateAll, 1000 / FPS); // invoke updateAll() fps times/second
+
+            // events
+            canvas.addEventListener('mousemove', updateMousePos);
         }
 
         function updateAll() {
@@ -54,6 +59,16 @@
             colorCircle(ballX, ballY, BALL_SIZE, BALL_COLOR);
             //paddle
             colorRect(paddleX, PADDLE_Y, PADDLE_WIDTH, PADDLE_THICKNESS, PADDLE_COLOR);
+        }
+
+        /* EVENTS */
+        function updateMousePos(event) {
+            //???
+            var rect = canvas.getBoundingClientRect();
+            var root = document.documentElement;
+
+            var mouseX = event.clientX - rect.left - root.scrollLeft;
+            paddleX = mouseX - PADDLE_WIDTH / 2; // center paddle
         }
 
         /* DRAWING HELPERS */
