@@ -10,7 +10,7 @@
    - Get canvas context: ```canvasContext = canvas.getContext("2d")``` (for drawing)
    - Set interval for animation: ```setInterval(updateFunction, 1000 / fps)```
 4. Drawing code with canvas context
-   - Draw big frame (to create effect of animation)
+   - Draw big frame (to clear screen and create effect of animation)
    - Draw game elements
 5. Motion code
    - Update element position

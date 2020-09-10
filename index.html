@@ -34,14 +34,23 @@
         }
 
         function drawAll() {
-            // big frame
-            canvasContext.fillStyle = "black";
-            canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+            // big frame (draw every time to clear screen)
+            colorRect(0, 0, canvas.width, canvas.height, "red");
 
-            // game elements
-            canvasContext.fillStyle = "white";
+            /* GAME ELEMENTS */
+            // ball
+            colorCircle(ballX, ballY, ballSize, "white")
+        }
+
+        function colorRect(topX, topY, boxWidth, boxHeight, fillColor) {
+            canvasContext.fillStyle = fillColor;
+            canvasContext.fillRect(topX, topY, boxWidth, boxHeight);
+        }
+
+        function colorCircle(centerX, centerY, radius, fillColor) {
+            canvasContext.fillStyle = fillColor;
             canvasContext.beginPath();
-            canvasContext.arc(ballX, ballY, ballSize, 0, Math.PI * 2, true);
+            canvasContext.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
             canvasContext.fill();
         }
 
