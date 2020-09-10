@@ -11,21 +11,33 @@
     <canvas id="gameCanvas" height="500" width="500"></canvas>
 
     <script>
+        // fundamental
         var canvas;
         /** @type {CanvasRenderingContext2D} */ // declare type in VSCode (for autofilling)
         var canvasContext;
-        var fps = 30;
+        const FPS = 30;
+        const BG_COLOR = "black";
+
+        // ball
         var ballX = 100;
         var ballY = 200;
-        var ballSpeedX = 5;
-        var ballSpeedY = 10;
-        var ballSize = 10;
+        var ballSpeedX = 7;
+        var ballSpeedY = 7;
+        const BALL_SIZE = 10;
+        const BALL_COLOR = "white";
+
+        // paddle
+        var paddleX = 300;
+        const PADDLE_WIDTH = 100;
+        const PADDLE_THICKNESS = 10;
+        const PADDLE_Y = 480;
+        const PADDLE_COLOR = "white";
 
         window.onload = function () {
             canvas = document.getElementById("gameCanvas");
             canvasContext = canvas.getContext("2d");
 
-            setInterval(updateAll, 1000 / fps); // invoke updateAll() fps times/second
+            setInterval(updateAll, 1000 / FPS); // invoke updateAll() fps times/second
         }
 
         function updateAll() {
@@ -35,13 +47,16 @@
 
         function drawAll() {
             // big frame (draw every time to clear screen)
-            colorRect(0, 0, canvas.width, canvas.height, "red");
+            colorRect(0, 0, canvas.width, canvas.height, BG_COLOR);
 
             /* GAME ELEMENTS */
             // ball
-            colorCircle(ballX, ballY, ballSize, "white")
+            colorCircle(ballX, ballY, BALL_SIZE, BALL_COLOR);
+            //paddle
+            colorRect(paddleX, PADDLE_Y, PADDLE_WIDTH, PADDLE_THICKNESS, PADDLE_COLOR);
         }
 
+        /* DRAWING HELPERS */
         function colorRect(topX, topY, boxWidth, boxHeight, fillColor) {
             canvasContext.fillStyle = fillColor;
             canvasContext.fillRect(topX, topY, boxWidth, boxHeight);
@@ -59,10 +74,10 @@
             ballX += ballSpeedX;
             ballY += ballSpeedY;
             // boundations (collision with big frame)
-            if (ballX < 0 || ballX > canvas.width) {
+            if (ballX < BALL_SIZE || ballX > canvas.width - BALL_SIZE) {
                 ballSpeedX *= -1;
             }
-            if (ballY < 0 || ballY > canvas.height) {
+            if (ballY < BALL_SIZE || ballY > canvas.height - BALL_SIZE) {
                 ballSpeedY *= -1;
             }
         }

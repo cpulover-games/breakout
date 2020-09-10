@@ -5,7 +5,9 @@
 <canvas id="gameCanvas" height="500" width="500"></canvas>
 ```
 3. Setup script
-   - Declare variables (for convention)
+   - Declare variables and constans (for convention)
+     - Fundamental: canvas, canvas contest, FPS, background color, etc.
+     - Game elements: X/Y position, X/Y speed, color, etc.
    - Get canvas: ```document.getElementById("gameCanvas")``` (to get canvas.width/height)
    - Get canvas context: ```canvasContext = canvas.getContext("2d")``` (for drawing)
    - Set interval for animation: ```setInterval(updateFunction, 1000 / fps)```
@@ -18,7 +20,8 @@
 
 # Notes and Tips
 - [VSCode] Declare type to enable autofilling feature: ```/** @type {CanvasRenderingContext2D} */```
-
+- 30 FPS prefer
+- [Refactor] Create drawing helpers
 
 
 
