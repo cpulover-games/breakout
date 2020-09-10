@@ -9,6 +9,30 @@
 
 <body>
     <canvas id="gameCanvas" height="500" width="500"></canvas>
+
+    <script>
+        var canvas;
+        /** @type {CanvasRenderingContext2D} */ // declare type in VSCode (for autofilling)
+        var canvasContext;
+        var fps = 30;
+        var ballX = 100;
+        var ballY = 200;
+        var ballSpeedX = 5;
+        var ballSpeedY = 10;
+        var ballSize = 10;
+
+        window.onload = function () {
+            canvas = document.getElementById("gameCanvas");
+            canvasContext = canvas.getContext("2d");
+
+            setInterval(updateAll, 1000 / fps); // invoke updateAll() fps times/second
+        }
+
+        function updateAll() {
+            moveAll();
+            drawAll();
+        }
+    </script>
 </body>
 
 </html>
