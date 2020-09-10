@@ -34,6 +34,11 @@
         const PADDLE_Y = 470;
         const PADDLE_COLOR = "white";
 
+        // mouse
+        var mouseX;
+        var mouseY;
+        const TEXT_COLOR = "yellow";
+
         // setup script
         window.onload = function () {
             canvas = document.getElementById("gameCanvas");
@@ -48,11 +53,11 @@
         function updateAll() {
             moveAll();
             drawAll();
-            paddleBallCollision();            
+            paddleBallCollision();
         }
 
         /* COLLISION */
-        function paddleBallCollision(){
+        function paddleBallCollision() {
             var paddleTopEdgeY = PADDLE_Y;
             var paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THICKNESS;
             var paddleLeftEdgeX = paddleX;
@@ -63,7 +68,7 @@
                 ballBottomPointY < paddleBottomEdgeY && // above bottom of paddle
                 ballX > paddleLeftEdgeX && // right of paddle left
                 ballX < paddleRightEdgeX) { //left of paddle right
-                
+
                 // update Y-speed
                 ballSpeedY *= -1;
                 // update X-speed based on distance of centers between ball and paddle (X)
@@ -79,11 +84,12 @@
             // big frame (draw every time to clear screen)
             colorRect(0, 0, canvas.width, canvas.height, BG_COLOR);
 
-            /* GAME ELEMENTS */
             // ball
             colorCircle(ballX, ballY, BALL_SIZE, BALL_COLOR);
-            //paddle
+            // paddle
             colorRect(paddleX, PADDLE_Y, PADDLE_WIDTH, PADDLE_THICKNESS, PADDLE_COLOR);
+            // mouse position
+            colorText(mouseX + ", " + mouseY, mouseX, mouseY, TEXT_COLOR);
         }
 
         /* EVENTS */
@@ -92,7 +98,9 @@
             var rect = canvas.getBoundingClientRect();
             var root = document.documentElement;
 
-            var mouseX = event.clientX - rect.left - root.scrollLeft;
+            mouseX = event.clientX - rect.left - root.scrollLeft;
+            mouseY = event.clientY - rect.top - root.scrollTop;
+
             paddleX = mouseX - PADDLE_WIDTH / 2; // center paddle
         }
         /* END OF EVENTS */
@@ -108,6 +116,11 @@
             canvasContext.beginPath();
             canvasContext.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
             canvasContext.fill();
+        }
+
+        function colorText(text, textX, textY, fillColor) {
+            canvasContext.fillStyle = fillColor;
+            canvasContext.fillText(text, textX, textY);
         }
         /* END OF DRAWING HELPERS */
 

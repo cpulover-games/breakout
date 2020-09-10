@@ -5,7 +5,7 @@
 <canvas id="gameCanvas" height="500" width="500"></canvas>
 ```
 3. Setup script
-   - Use ```window.onload = function``` (to load script only after window is ready)
+   - Use ```window.onload``` function (to load script only after HTML page finishes loading)
    - Declare variables and constans (for convention)
      - Fundamental: canvas, canvas context, FPS, background color, etc.
      - Game elements: X/Y position, X/Y speed, color, etc.
@@ -32,11 +32,11 @@
 - [Refactor] Create drawing helpers
 - [Event] Fix mousemove position when page is scrolled
 ```
-var rect = canvas.getBoundingClientRect;
+var rect = canvas.getBoundingClientRec()t;
 var root = document.documentElement;
 var mouseX = event.clientX - rect.left- root.scrollLeft;
 ```
-
+- [Debug] Dislay mouse coordinate
 
 
 
