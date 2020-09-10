@@ -8,10 +8,13 @@
    - Declare variables (for convention)
    - Get canvas: ```document.getElementById("gameCanvas")``` (to get canvas.width/height)
    - Get canvas context: ```canvasContext = canvas.getContext("2d")``` (for drawing)
-   - Set intervanl for animation: ```setInterval(updateFunction, 1000 / fps)```
+   - Set interval for animation: ```setInterval(updateFunction, 1000 / fps)```
+4. Drawing code with canvas context
+   - Draw big frame (to create effect of animation)
+   - Draw game elements
 
 # Notes and Tips
-- [VSCode] Declare type to enable autofilling feature ```/** @type {CanvasRenderingContext2D} */```
+- [VSCode] Declare type to enable autofilling feature: ```/** @type {CanvasRenderingContext2D} */```
 
 
 
