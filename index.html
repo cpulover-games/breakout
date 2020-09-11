@@ -24,7 +24,7 @@
         var ballY = 400;
         var ballSpeedX = 2;
         var ballSpeedY = 2;
-        const BALL_SIZE = 10;
+        const BALL_SIZE = 7;
         const BALL_COLOR = "white";
 
         // paddle
@@ -36,10 +36,11 @@
 
         // brick
         const BRICK_COLS = 10;
-        const BRICK_ROWS = 5;
+        const BRICK_ROWS = 10;
         var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // contains boolean for visibility
+        var brickLeft = 0;
         const BRICK_WIDTH = 50;
-        const BRICK_HEIGHT = 50;
+        const BRICK_HEIGHT = 20;
         const BRICK_GAP = 3;
         const BRICK_COLOR = "blue";
 
@@ -53,20 +54,24 @@
             canvas = document.getElementById("gameCanvas");
             canvasContext = canvas.getContext("2d");
 
+            initGame();
+
             setInterval(updateAll, 1000 / FPS); // invoke updateAll() fps times/second
 
             // events
             canvas.addEventListener('mousemove', updateMousePos);
-
-            initGame();
         }
 
         /* INITIALIZATION */
         function initGame() {
             // init bricks
-            for (i = 0; i < BRICK_COLS * BRICK_ROWS; i++) {
+            for (i = 0; i < 3 * BRICK_COLS; i++) { // create "gutter": empty space on top
+                brickGrid[i] = false;
+            }
+            for (i = 3 * BRICK_COLS; i < BRICK_COLS * BRICK_ROWS; i++) {
                 if (Math.random() > 0.5) {
                     brickGrid[i] = true;
+                    brickLeft++;
                 } else {
                     brickGrid[i] = false;
                 };
@@ -78,6 +83,10 @@
             drawAll();
             paddleBallCollision();
             brickBallCollision();
+            if (brickLeft == 0) {
+                resetBall();
+                initGame();
+            }
         }
 
         /* COLLISION */
@@ -98,7 +107,7 @@
                 // update X-speed based on distance of centers between ball and paddle (X)
                 var paddleCenterPointX = paddleX + PADDLE_WIDTH / 2;
                 var paddleToBallCenter = ballX - paddleCenterPointX;
-                ballSpeedX = paddleToBallCenter * 0.15;
+                ballSpeedX = paddleToBallCenter * 0.35;
             }
         }
 
@@ -115,6 +124,7 @@
                 brickGrid[brickIndexUnderBall]) { // collision happens if brick is not hidden
                 // hide the brick
                 brickGrid[brickIndexUnderBall] = false;
+                brickLeft--;
 
                 var previousBallX = ballX - ballSpeedX;
                 var previousBallY = ballY - ballSpeedY;
@@ -181,11 +191,15 @@
 
             paddleX = mouseX - PADDLE_WIDTH / 2; // center paddle
 
+            // cheat();
+        }
+
+        function cheat() {
             // cheat for testing: make ball follow the mouse
             ballX = mouseX;
             ballY = mouseY;
-            ballSpeedX = 3;
-            ballSpeedY = -3;
+            ballSpeedX = 5;
+            ballSpeedY = -5;
         }
         /* END OF EVENTS */
 
@@ -232,10 +246,11 @@
             ballX += ballSpeedX;
             ballY += ballSpeedY;
             // boundations (collision with big frame)
-            if (ballX < BALL_SIZE || ballX > canvas.width - BALL_SIZE) {
+            if (ballX < BALL_SIZE && ballSpeedX < 0 || // ball hits left
+                ballX > canvas.width - BALL_SIZE && ballSpeedX > 0) { // ball hits right
                 ballSpeedX *= -1;
             }
-            if (ballY < BALL_SIZE) {
+            if (ballY < BALL_SIZE && ballSpeedY < 0) { // ball hits top
                 ballSpeedY *= -1;
             }
             /* GAME OVER */
@@ -250,6 +265,7 @@
             ballY = canvas.height / 2;
             ballSpeedX = 7;
             ballSpeedY = 7;
+            brickLeft = 0;
         }
     </script>
 </body>
