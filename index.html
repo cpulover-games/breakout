@@ -35,10 +35,12 @@
         const PADDLE_COLOR = "white";
 
         // brick
-        const BRICK_COUNT = 5;
-        var brickGrid = new Array(BRICK_COUNT); // visibility
+        const BRICK_COLS = 6;
+        const BRICK_ROWS = 3;
+        var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // contains boolean for visibility
         const BRICK_WIDTH = 50;
         const BRICK_HEIGHT = 30;
+        const BRICK_GAP = 3;
         const BRICK_COLOR = "blue";
 
         // mouse
@@ -55,14 +57,14 @@
 
             // events
             canvas.addEventListener('mousemove', updateMousePos);
-            
-            // init code
+
             initGame();
         }
 
         /* INITIALIZATION */
         function initGame() {
-            for (i = 0; i < brickGrid.length; i++) {
+            // init bricks
+            for (i = 0; i < BRICK_COLS * BRICK_ROWS; i++) {
                 brickGrid[i] = true;
             }
         }
@@ -143,9 +145,12 @@
         }
 
         function drawBricks() {
-            for (i = 0; i < brickGrid.length; i++) {
-                if (brickGrid[i]) {
-                    colorRect(BRICK_WIDTH * i, 2, BRICK_WIDTH - 2, BRICK_HEIGHT, BRICK_COLOR);
+            for (eachRow = 0; eachRow < BRICK_ROWS; eachRow++) {
+                for (eachCol = 0; eachCol < BRICK_COLS; eachCol++) {
+                    if (brickGrid[eachCol + eachRow * BRICK_COLS]) {
+                        colorRect(BRICK_WIDTH * eachCol, BRICK_HEIGHT * eachRow, BRICK_WIDTH - BRICK_GAP, BRICK_HEIGHT -
+                            BRICK_GAP, BRICK_COLOR);
+                    }
                 }
             }
         }
