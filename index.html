@@ -22,8 +22,8 @@
         // ball
         var ballX = 100;
         var ballY = 400;
-        var ballSpeedX = 7;
-        var ballSpeedY = 7;
+        var ballSpeedX = 2;
+        var ballSpeedY = 2;
         const BALL_SIZE = 10;
         const BALL_COLOR = "white";
 
@@ -36,10 +36,10 @@
 
         // brick
         const BRICK_COLS = 10;
-        const BRICK_ROWS = 7;
+        const BRICK_ROWS = 5;
         var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // contains boolean for visibility
         const BRICK_WIDTH = 50;
-        const BRICK_HEIGHT = 30;
+        const BRICK_HEIGHT = 50;
         const BRICK_GAP = 3;
         const BRICK_COLOR = "blue";
 
@@ -98,7 +98,7 @@
                 // update X-speed based on distance of centers between ball and paddle (X)
                 var paddleCenterPointX = paddleX + PADDLE_WIDTH / 2;
                 var paddleToBallCenter = ballX - paddleCenterPointX;
-                ballSpeedX = paddleToBallCenter * 0.35;
+                ballSpeedX = paddleToBallCenter * 0.15;
             }
         }
 
@@ -115,7 +115,41 @@
                 brickGrid[brickIndexUnderBall]) { // collision happens if brick is not hidden
                 // hide the brick
                 brickGrid[brickIndexUnderBall] = false;
-                ballSpeedY *= -1;
+
+                var previousBallX = ballX - ballSpeedX;
+                var previousBallY = ballY - ballSpeedY;
+                var previousBallBrickCol = Math.floor(previousBallX / BRICK_WIDTH);
+                var previousBallBrickRow = Math.floor(previousBallY / BRICK_WIDTH);
+
+                var armpitCase = true;
+
+                // column changes when ball hits front of the brick
+                if (previousBallBrickCol != ballBrickCol) {
+                    // brick right/left to hit brick is on the previous column, same row
+                    var adjHorizontalBrickIndex = colRowToIndexArray(previousBallBrickCol, ballBrickRow);
+                    // if the adjacent brick not exist, allow ball to bound horizontally
+                    if (!brickGrid[adjHorizontalBrickIndex]) {
+                        ballSpeedX *= -1;
+                        armpitCase = false;
+                    }
+                }
+                // row changes when ball hits side of the brick
+                if (previousBallBrickRow != ballBrickRow) {
+                    // brick above/below to hit brick is on the same column, previous row
+                    var adjVerticalBrickIndex = colRowToIndexArray(ballBrickCol, previousBallBrickRow);
+                    // if the adjacent brick not exist, allow ball to bound vertically
+                    if (!brickGrid[adjVerticalBrickIndex]) {
+                        ballSpeedY *= -1;
+                        armpitCase = false;
+                    }
+                }
+
+                // prevent ball go through if armpit case
+                if (armpitCase) {
+                    ballSpeedX *= -1;
+                    ballSpeedY *= -1;
+                }
+                // both changes when ball hits the corner => change both speeds
             }
 
         }
@@ -146,6 +180,12 @@
             mouseY = event.clientY - rect.top - root.scrollTop;
 
             paddleX = mouseX - PADDLE_WIDTH / 2; // center paddle
+
+            // cheat for testing: make ball follow the mouse
+            ballX = mouseX;
+            ballY = mouseY;
+            ballSpeedX = 3;
+            ballSpeedY = -3;
         }
         /* END OF EVENTS */
 
@@ -175,6 +215,7 @@
                         colorRect(BRICK_WIDTH * eachCol, BRICK_HEIGHT * eachRow, BRICK_WIDTH - BRICK_GAP, BRICK_HEIGHT -
                             BRICK_GAP, BRICK_COLOR);
                     }
+
                 }
             }
         }
