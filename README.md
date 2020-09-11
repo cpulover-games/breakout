@@ -11,7 +11,7 @@
    - Use ```window.onload``` function (to load script only after HTML page finishes loading)
    - Get canvas: ```document.getElementById("gameCanvas")``  ` (to get canvas.width/height, add  events)
    - Get canvas context: ```canvasContext = canvas.getContext("2d")``` (for drawing)
-   - Set interval for animation: ```setIntervafghjjhghnjhvhghhtytrtyytewewe865434562w3ee334(updateFunction, 1000 / fps)```
+   - Set interval for animation: ```setInterval(updateFunction, 1000 / fps)```
    - Init code: initialize states of game...../ elements
 5. Drawing code (interval)
    - Draw big frame (to clear screen and create effect of animation)
@@ -23,7 +23,7 @@
 8. Collision code (interval)
    - Determine edge coordinates of each element
    - Compare coordinates (collision happens when element coordinates overlap)
-   - Update speeds when collision
+   - Update speeds, states when collision
 
 # Notes and Tips
 - [VSCode - JS] Declare type to enable code completion feature: ```/** @type {<type_name>} */```
