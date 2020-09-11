@@ -32,7 +32,7 @@
 - [Refactor] Create drawing helpers
 - [Event] Fix mousemove position when page is scrolled
 ```
-var rect = canvas.getBoundingClientRec()t;
+var rect = canvas.getBoundingClientRect();
 var root = document.documentElement;
 var mouseX = event.clientX - rect.left- root.scrollLeft;
 ```

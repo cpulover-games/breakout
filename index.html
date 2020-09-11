@@ -34,6 +34,12 @@
         const PADDLE_Y = 470;
         const PADDLE_COLOR = "white";
 
+        // brick
+        var brickGrid = [true, true, true, true]; // visibility
+        const BRICK_WIDTH = 50;
+        const BRICK_HEIGHT = 30;
+        const BRICK_COLOR = "blue";
+
         // mouse
         var mouseX;
         var mouseY;
@@ -88,6 +94,8 @@
             colorCircle(ballX, ballY, BALL_SIZE, BALL_COLOR);
             // paddle
             colorRect(paddleX, PADDLE_Y, PADDLE_WIDTH, PADDLE_THICKNESS, PADDLE_COLOR);
+            // bricks
+            drawBricks();
             // mouse position
             colorText(mouseX + ", " + mouseY, mouseX, mouseY, TEXT_COLOR);
         }
@@ -122,6 +130,14 @@
             canvasContext.fillStyle = fillColor;
             canvasContext.fillText(text, textX, textY);
         }
+
+        function drawBricks() {
+            for (i = 0; i < brickGrid.length; i++) {
+                if (brickGrid[i]) {
+                    colorRect(BRICK_WIDTH * i, 2, BRICK_WIDTH-2, BRICK_HEIGHT, BRICK_COLOR);
+                }
+            }
+        }
         /* END OF DRAWING HELPERS */
 
         /* MOTION */
@@ -136,12 +152,13 @@
             if (ballY < BALL_SIZE) {
                 ballSpeedY *= -1;
             }
-            // game over
+            /* GAME OVER */
             if (ballY > canvas.height - BALL_SIZE) {
                 resetBall();
             }
         }
 
+        /* GAME RESTART */
         function resetBall() {
             ballX = canvas.width / 2;
             ballY = canvas.height / 2;
