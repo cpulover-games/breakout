@@ -36,7 +36,7 @@
 
         // brick
         const BRICK_COLS = 10;
-        const BRICK_ROWS = 10;
+        const BRICK_ROWS = 4;
         var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // contains boolean for visibility
         var brickLeft = 0;
         const BRICK_WIDTH = 50;
@@ -64,7 +64,12 @@
 
         /* INITIALIZATION */
         function initGame() {
-            // init bricks
+            initBricks();
+            initBall();
+        }
+
+        function initBricks() {
+            brickLeft = 0;
             for (i = 0; i < 3 * BRICK_COLS; i++) { // create "gutter": empty space on top
                 brickGrid[i] = false;
             }
@@ -78,15 +83,19 @@
             }
         }
 
+        function initBall() {
+            ballX = canvas.width / 2;
+            ballY = canvas.height / 2;
+            ballSpeedX = 7;
+            ballSpeedY = 7;
+        }
+        /* END OF INITIALIZATION */
+
         function updateAll() {
             moveAll();
             drawAll();
             paddleBallCollision();
             brickBallCollision();
-            if (brickLeft == 0) {
-                resetBall();
-                initGame();
-            }
         }
 
         /* COLLISION */
@@ -112,7 +121,7 @@
         }
 
         function brickBallCollision() {
-            //indicate which col and row of brickGrid[] the ball are in
+            // indicate which col and row of brickGrid[] the ball are in
             var ballBrickCol = Math.floor(ballX / BRICK_WIDTH);
             var ballBrickRow = Math.floor(ballY / BRICK_HEIGHT);
             // convert to index array with col and row
@@ -125,6 +134,13 @@
                 // hide the brick
                 brickGrid[brickIndexUnderBall] = false;
                 brickLeft--;
+                // console.log(brickLeft);
+
+                /* Game Over: finish */
+                if (brickLeft == 0) {
+                    // console.log("Win");
+                    initGame();
+                }
 
                 var previousBallX = ballX - ballSpeedX;
                 var previousBallY = ballY - ballSpeedY;
@@ -191,7 +207,7 @@
 
             paddleX = mouseX - PADDLE_WIDTH / 2; // center paddle
 
-            // cheat();
+            cheat();
         }
 
         function cheat() {
@@ -253,19 +269,10 @@
             if (ballY < BALL_SIZE && ballSpeedY < 0) { // ball hits top
                 ballSpeedY *= -1;
             }
-            /* GAME OVER */
+            /* Game Over: ball hits bottom */
             if (ballY > canvas.height - BALL_SIZE) {
-                resetBall();
+                initGame();
             }
-        }
-
-        /* GAME RESTART */
-        function resetBall() {
-            ballX = canvas.width / 2;
-            ballY = canvas.height / 2;
-            ballSpeedX = 7;
-            ballSpeedY = 7;
-            brickLeft = 0;
         }
     </script>
 </body>
