@@ -11,8 +11,8 @@
    - Use ```window.onload``` function (to load script only after HTML page finishes loading)
    - Get canvas: ```document.getElementById("gameCanvas")``` (to get canvas.width/height, add  events)
    - Get canvas context: ```canvasContext = canvas.getContext("2d")``` (for drawing)
-   - Set interval for animation: ```setInterval(updateFunction, 1000 / fps)```
    - Init code: initialize states of game elements
+   - Set interval for animation/drawing: ```setInterval(updateFunction, 1000 / fps)```
 5. Drawing code (interval)
    - Draw big frame (to clear screen and create effect of animation)
    - Draw game elements

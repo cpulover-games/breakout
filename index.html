@@ -18,6 +18,8 @@
         var canvasContext;
         const FPS = 30;
         const BG_COLOR = "black";
+        const COLORS = ["blue", "green", "yellow", "red"]; // to randomize element color
+        var indexColor = 0;
 
         // ball
         var ballX = 100;
@@ -25,24 +27,24 @@
         var ballSpeedX = 2;
         var ballSpeedY = 2;
         const BALL_SIZE = 7;
-        const BALL_COLOR = "white";
+        var ballColor;
 
         // paddle
         var paddleX = 300;
         const PADDLE_WIDTH = 80;
         const PADDLE_THICKNESS = 10;
         const PADDLE_Y = 470;
-        const PADDLE_COLOR = "white";
+        var paddleColor;
 
         // brick
         const BRICK_COLS = 10;
-        const BRICK_ROWS = 4;
+        const BRICK_ROWS = 10;
         var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // contains boolean for visibility
         var brickLeft = 0;
         const BRICK_WIDTH = 50;
         const BRICK_HEIGHT = 20;
         const BRICK_GAP = 3;
-        const BRICK_COLOR = "blue";
+        var brickColor;
 
         // mouse
         var mouseX;
@@ -64,8 +66,16 @@
 
         /* INITIALIZATION */
         function initGame() {
+            initColors();
             initBricks();
             initBall();
+        }
+
+        function initColors() {
+            // indexColor=0;
+            paddleColor = COLORS[indexColor];
+            ballColor = COLORS[indexColor];
+            brickColor = COLORS[indexColor];
         }
 
         function initBricks() {
@@ -134,6 +144,7 @@
                 // hide the brick
                 brickGrid[brickIndexUnderBall] = false;
                 brickLeft--;
+                randomizeColors();
                 // console.log(brickLeft);
 
                 /* Game Over: finish */
@@ -178,6 +189,15 @@
                 // both changes when ball hits the corner => change both speeds
             }
 
+            function randomizeColors() {
+                var oldIndexColor = indexColor;
+                // make sure new color is different than the old one
+                while (indexColor == oldIndexColor) {
+                    indexColor = Math.floor(Math.random() * COLORS.length);
+                }
+                initColors();
+            }
+
         }
         /* END OF COLLISION */
 
@@ -187,9 +207,9 @@
             colorRect(0, 0, canvas.width, canvas.height, BG_COLOR);
 
             // ball
-            colorCircle(ballX, ballY, BALL_SIZE, BALL_COLOR);
+            colorCircle(ballX, ballY, BALL_SIZE, ballColor);
             // paddle
-            colorRect(paddleX, PADDLE_Y, PADDLE_WIDTH, PADDLE_THICKNESS, PADDLE_COLOR);
+            colorRect(paddleX, PADDLE_Y, PADDLE_WIDTH, PADDLE_THICKNESS, paddleColor);
             // bricks
             drawBricks();
             // mouse position
@@ -207,7 +227,7 @@
 
             paddleX = mouseX - PADDLE_WIDTH / 2; // center paddle
 
-            cheat();
+            // cheat();
         }
 
         function cheat() {
@@ -243,7 +263,7 @@
                     var indexArray = colRowToIndexArray(eachCol, eachRow);
                     if (brickGrid[indexArray]) {
                         colorRect(BRICK_WIDTH * eachCol, BRICK_HEIGHT * eachRow, BRICK_WIDTH - BRICK_GAP, BRICK_HEIGHT -
-                            BRICK_GAP, BRICK_COLOR);
+                            BRICK_GAP, brickColor);
                     }
 
                 }
