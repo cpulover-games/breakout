@@ -40,6 +40,7 @@ var mouseX = event.clientX - rect.left- root.scrollLeft;
 var mouseY = event.clientY - rect.top - root.scrollTop;
 ```
 - [Debug] Dislay mouse coordinate
+- Init only (mostly) constants' values in declaration section, for variables' values, init in initialization code
 
 
 

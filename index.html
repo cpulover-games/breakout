@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Breakout</title>
+    <title>Justa Breakout</title>
 </head>
 
 <body>
@@ -18,19 +18,19 @@
         var canvasContext;
         const FPS = 30;
         const BG_COLOR = "black";
-        const COLORS = ["blue", "green", "yellow", "red"]; // to randomize element color
-        var indexColor = 0;
+        const COLORS = ["green", "yellow", "red"]; // to randomize element color
+        var indexColor;
 
         // ball
-        var ballX = 100;
-        var ballY = 400;
-        var ballSpeedX = 2;
-        var ballSpeedY = 2;
+        var ballX;
+        var ballY;
+        var ballSpeedX;
+        var ballSpeedY;
         const BALL_SIZE = 7;
         var ballColor;
 
         // paddle
-        var paddleX = 300;
+        var paddleX;
         const PADDLE_WIDTH = 80;
         const PADDLE_THICKNESS = 10;
         const PADDLE_Y = 470;
@@ -40,7 +40,7 @@
         const BRICK_COLS = 10;
         const BRICK_ROWS = 10;
         var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // contains boolean for visibility
-        var brickLeft = 0;
+        var brickLeft;
         const BRICK_WIDTH = 50;
         const BRICK_HEIGHT = 20;
         const BRICK_GAP = 3;
@@ -66,13 +66,18 @@
 
         /* INITIALIZATION */
         function initGame() {
+            paddleX = canvas.width/2;
             initColors();
             initBricks();
             initBall();
         }
 
         function initColors() {
-            // indexColor=0;
+            indexColor=0;
+            changeColors();            
+        }
+
+        function changeColors(){
             paddleColor = COLORS[indexColor];
             ballColor = COLORS[indexColor];
             brickColor = COLORS[indexColor];
@@ -97,7 +102,7 @@
             ballX = canvas.width / 2;
             ballY = canvas.height / 2;
             ballSpeedX = 7;
-            ballSpeedY = 7;
+            ballSpeedY = -7;
         }
         /* END OF INITIALIZATION */
 
@@ -195,7 +200,7 @@
                 while (indexColor == oldIndexColor) {
                     indexColor = Math.floor(Math.random() * COLORS.length);
                 }
-                initColors();
+                changeColors();
             }
 
         }
